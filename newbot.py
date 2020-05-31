@@ -36,7 +36,6 @@ class SkypePing(SkypeEventLoop):
           # print(event.msg.content)
           # print("----------------")
           global index
-          index = index + 1
 
           # if "skip" in event.msg.content.lower():
           #   event.msg.chat.sendMsg('.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.')
@@ -158,6 +157,9 @@ class SkypePing(SkypeEventLoop):
             input_file = open('toeicPart1.json', encoding='utf-8')
             json_array = json.load(input_file)
             item = json_array[index]
+            index = index + 1
+            if index == len(json_array):
+              index = 0
             audio_url = item.get('audio')
             img_url = item.get('image')
             question_id = item.get('question_id')
