@@ -3,23 +3,28 @@ import requests
 from datetime import date
 import datetime
 import json
-from googletrans import Translator
-import wikipedia
+# from googletrans import Translator
+# import wikipedia
 import random
-import feedparser
-from gtts import gTTS
+# import feedparser
+# from gtts import gTTS
 import os
 import numpy as np
 
 Skype("bapdola304@gmail.com", "Ngohung0", "token")
 
-wikipedia.set_lang("vi")
-translator = Translator()
+# wikipedia.set_lang("vi")
+# translator = Translator()
 
 print('Bot are running...')
 
 foo = ['Back', 'Tuyến', 'Đon', 'Nai', 'Vươnq', 'Duck', 'Quâng', 'Hâng']
-index = 0
+input_file_len = open('toeicPart1.json', encoding='utf-8')
+json_array_len = json.load(input_file_len)
+size_len = len(json_array_len)
+index = size_len - 1
+da = ["A", "B", "C", "D"]
+dad = '1'
 
 def getHeadlines( rss_url ):
     headlines = []
@@ -156,10 +161,12 @@ class SkypePing(SkypeEventLoop):
           if "toeic part1" in event.msg.content.lower():
             input_file = open('toeicPart1.json', encoding='utf-8')
             json_array = json.load(input_file)
-            item = json_array[index]
-            index = index + 1
-            if index == len(json_array):
-              index = 0
+            # item = json_array[index]
+            item = random.choice(json_array)
+            size = len(json_array)
+            index = index - 1
+            if index < 0:
+              index = size
             audio_url = item.get('audio')
             img_url = item.get('image')
             question_id = item.get('question_id')
@@ -176,16 +183,23 @@ class SkypePing(SkypeEventLoop):
             os.remove("audio.mp3") #remove file
           if "đáp án" in event.msg.content.lower():
             question_id = event.msg.content.lower().split(" ")[2]
-            input_file = open('toeicPart1.json', encoding='utf-8')
-            json_array = json.load(input_file)
-            arr = np.array(json_array)
-            arrTemp = []
-            for element in arr:
-              if element.get('question_id') == question_id:
-                arrTemp.append(element)
-                break
-            print(arrTemp)
-            event.msg.chat.sendMsg('Đáp án câu ' + question_id + ' : ' + arrTemp[0].get('answerCorrect'))
-
+            try:
+              input_file = open('toeicPart1.json', encoding='utf-8')
+              json_array = json.load(input_file)
+              arr = np.array(json_array)
+              arrTemp = []
+              for element in arr:
+                if element.get('question_id') == question_id:
+                  arrTemp.append(element)
+                  break
+              answers = arrTemp[0].get('answers')
+              event.msg.chat.sendMsg('Câu ' + question_id)
+              for i in range(len(answers)):
+                if answers[i].get('correct') == '1':
+                  event.msg.chat.sendMsg(da[i] + '. ' + answers[i].get('content') + ' (*correct answer)')
+                else:
+                  event.msg.chat.sendMsg( da[i] + '. ' + answers[i].get('content'))
+            except:
+              event.msg.chat.sendMsg('?')
 sk = SkypePing(tokenFile="token", autoAck=True)
 sk.loop()
