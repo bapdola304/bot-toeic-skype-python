@@ -11,6 +11,8 @@
 
 /config/token
 
+/config/account.json
+
 # misc
 .env
 npm-debug.log*
