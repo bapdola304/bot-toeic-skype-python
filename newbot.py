@@ -158,7 +158,7 @@ class SkypePing(SkypeEventLoop):
           #   else :
           #     event.msg.chat.sendMsg('Tính năng chỉ khả dụng sau 7h tối')
 
-          if "toeic part1" in event.msg.content.lower():
+          if "toeic part1" in event.msg.content.lower() or "toeic part 1" in event.msg.content.lower():
             input_file = open('toeicPart1.json', encoding='utf-8')
             json_array = json.load(input_file)
             # item = json_array[index]
@@ -181,8 +181,8 @@ class SkypePing(SkypeEventLoop):
             event.msg.chat.sendFile(open("audio.mp3", "rb"), "audio.mp3", False, True)
             os.remove("img.png") #remove file
             os.remove("audio.mp3") #remove file
-          if "đáp án" in event.msg.content.lower():
-            question_id = event.msg.content.lower().split(" ")[2]
+          if "p1" in event.msg.content.lower():
+            question_id = event.msg.content.lower().split(" ")[1]
             try:
               input_file = open('toeicPart1.json', encoding='utf-8')
               json_array = json.load(input_file)
@@ -199,6 +199,40 @@ class SkypePing(SkypeEventLoop):
                   event.msg.chat.sendMsg(da[i] + '. ' + answers[i].get('content') + ' (*correct answer)')
                 else:
                   event.msg.chat.sendMsg( da[i] + '. ' + answers[i].get('content'))
+            except:
+              event.msg.chat.sendMsg('?')
+          if "toeic part2" in event.msg.content.lower() or "toeic part 2" in event.msg.content.lower():
+            input_file = open('toeicPart2.json', encoding='utf-8')
+            json_array = json.load(input_file)
+            item = random.choice(json_array)
+            audio_url = item.get('audio')
+            question_id = item.get('question_id')
+            audio_data = requests.get(audio_url).content
+            with open('audio.mp3', 'wb') as handler:
+                handler.write(audio_data) # write do dia
+            event.msg.chat.sendMsg('Part 2: Câu ' + question_id)
+            event.msg.chat.sendFile(open("audio.mp3", "rb"), "audio.mp3", False, True)
+            os.remove("audio.mp3") #remove file
+          if "p2" in event.msg.content.lower():
+            question_id = event.msg.content.lower().split(" ")[1]
+            try:
+              input_file = open('toeicPart2.json', encoding='utf-8')
+              json_array = json.load(input_file)
+              arr = np.array(json_array)
+              arrTemp2 = []
+              for element in arr:
+                if element.get('question_id') == question_id:
+                  arrTemp2.append(element)
+                  break
+              list_anwser = arrTemp2[0].get('answers')
+              for i in range(len(list_anwser)):
+                if i == 0:
+                  event.msg.chat.sendMsg('Question: ' + list_anwser[i].get('content'))
+                else:
+                  if list_anwser[i].get('correct') == '1':
+                    event.msg.chat.sendMsg( da[i-1] +  '. ' + list_anwser[i].get('content') + '(*answer correct*)')
+                  else:
+                    event.msg.chat.sendMsg( da[i-1] +  '. ' + list_anwser[i].get('content'))
             except:
               event.msg.chat.sendMsg('?')
 sk = SkypePing(tokenFile="token", autoAck=True)
