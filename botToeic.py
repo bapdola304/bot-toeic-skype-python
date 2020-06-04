@@ -20,6 +20,7 @@ username = account.get('username')
 password = account.get('password')
 Skype(username, password, "./config/token")
 print('Bot is already running...')
+print('Bot will work after 10 - 30 seconds')
 
 #get data
 part1Data= open(toeicPart1Path, encoding='utf-8')
