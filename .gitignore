@@ -9,8 +9,6 @@
 # production
 /build
 
-/config/token
-
 /config/account.json
 
 # misc
