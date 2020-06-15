@@ -1,1 +1,1 @@
-web: gunicorn botToeic.py
+worker: python botToeic.py
