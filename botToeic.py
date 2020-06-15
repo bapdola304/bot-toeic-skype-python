@@ -6,6 +6,7 @@ import json
 import random
 import os
 import numpy as np
+from env import UP
 
 #define path
 toeicPart1Path = './data/toeicPart1.json'
@@ -19,7 +20,8 @@ authAccount = open(accountPath, encoding='utf-8')
 account = json.load(authAccount)
 username = account.get('username')
 password = account.get('password')
-Skype(username, password, "./config/token")
+# Skype(username, password, "./config/token")
+Skype(UP('U'), UP('P'), "./config/token") #config evn
 print('Bot is already running...')
 print('Bot will work after 10 - 30 seconds')
 
