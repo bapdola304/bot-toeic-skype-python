@@ -40,6 +40,8 @@ class SkypePing(SkypeEventLoop):
     def onEvent(self, event):
         if isinstance(event, SkypeNewMessageEvent) \
           and not event.msg.userId == self.userId:
+          if "mệt mỏi" in event.msg.content.lower() or "met moi" in event.msg.content.lower() or "biết" in event.msg.content.lower():
+            event.msg.chat.sendMsg('Làm Ngkề đây pit rầu')
           if "toeic part1" in event.msg.content.lower() or "toeic part 1" in event.msg.content.lower() or "part 1" in event.msg.content.lower() or "part1" in event.msg.content.lower():
             part1Item = random.choice(part1FormatJson)
             audio_url = part1Item.get('audio')
