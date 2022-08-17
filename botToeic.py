@@ -21,7 +21,7 @@ account = json.load(authAccount)
 username = account.get('username')
 password = account.get('password')
 # Skype(username, password, "./config/token")
-Skype('bapdola304@gmail.com', 'Ngohung0', "./config/token") #config evn
+Skype('bapdola304@gmail.com', 'Ngohung0404@', "./config/token") #config evn
 print('Bot is already running...')
 print('Bot will work after 10 - 30 seconds')
 
